@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Không cho xem cấu trúc thư mục
+Options -Indexes
+
+# Nếu không phải file thật
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Nếu không phải folder thật
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển mọi request về index.php
+RewriteRule ^ index.php [L,QSA]
