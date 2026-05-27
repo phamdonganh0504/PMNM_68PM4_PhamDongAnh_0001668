@@ -21,6 +21,10 @@ class App
             }
         }
 
+        require_once '../app/core/Controller.php';
+
+        require_once '../app/middleware.php';
+
         require_once '../app/controllers/' . $this->controller . '.php';
 
         $this->controller = new $this->controller;
@@ -37,7 +41,9 @@ class App
         }
 
         // Params
-        $this->params = $urlProcessed ? array_values($urlProcessed) : [];
+        $this->params = $urlProcessed
+            ? array_values($urlProcessed)
+            : [];
 
         call_user_func_array(
             [$this->controller, $this->action],
