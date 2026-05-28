@@ -2,7 +2,7 @@
 class auth extends Controller {
     protected $user = [
         "admin" => "123456",
-        "user" => "123456"
+        "phamdonganh" => "123456"
     ];
 
     public function login() {

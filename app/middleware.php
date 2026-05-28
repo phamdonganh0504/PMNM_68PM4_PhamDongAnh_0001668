@@ -1,11 +1,10 @@
 <?php
 class middleware {
     function checklogin() {
-        // Lấy URL và làm sạch
+    
         $currentUrl = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'home/index';
         
-        // Bật dòng dưới đây để kiểm tra nếu vẫn bị lỗi (xem nó hiện ra chữ gì)
-        // die("URL hien tai: " . $currentUrl); 
+        
 
         $publicPages = [
             'home/login',
