@@ -1,5 +1,5 @@
 <?php
-session_start(); // THÊM DÒNG NÀY VÀO ĐẦU FILE
+session_start(); 
 
 require_once '../app/middleware.php';
 require_once '../app/core/App.php';

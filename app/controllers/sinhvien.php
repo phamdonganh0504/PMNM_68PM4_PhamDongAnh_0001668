@@ -1,16 +1,26 @@
 <?php
+
 class sinhvien extends Controller {
-    public function index() {
-        //  Gọi model
-        $svModel = $this->model('sinhvienModel');
+
+    public function index() { 
+        $sinhvienModel = $this->model('sinhvienModel'); 
+        $sinhvien = $sinhvienModel->getALLSinhVien(); 
         
-        //  Lấy dữ liệu từ DB
-        $list_sv = $svModel->getAllSinhVien();
-        
-        
-        $this->view("sinhvien/index", [
-            "sinhvien" => $list_sv, 
-            "title" => "Danh sách sinh viên lớp 68PM4"
+        // Gọi masterlayout
+        $this->view("layout/masterlayout", [ 
+            "viewname" => "sinhvien/index", 
+            "sinhvien" => $sinhvien, 
+            "title" => "Danh sach sinh vien" 
+        ]); 
+    }
+
+    public function create() {
+        $this->view("layout/masterlayout", [
+            "viewname" => "sinhvien/create",
+            "title" => "Them moi sinh vien"
         ]);
     }
+    
+    // Thêm các hàm khác nếu có...
 }
+?>
