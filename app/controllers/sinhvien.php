@@ -2,17 +2,23 @@
 class sinhvien extends Controller {
     
     //   hiển thị danh sách
-    public function index() {
-        $sinhvienModel = $this->model('sinhvienModel');
-        $sinhvien = $sinhvienModel->getALLSinhVien();
+    public function index($page = 1) {
+        $limit = 5; // Số bản ghi mỗi trang
+        $page = (int)$page > 0 ? (int)$page : 1; 
+        $offset = ($page - 1) * $limit;
 
+        $sinhvienModel = $this->model('sinhvienModel');
+        $result = $sinhvienModel->paging($limit, $offset);
+
+        // Truyền dữ liệu  sang view
         $this->view("layout/masterlayout", [
             "viewname" => "sinhvien/index",
-            "sinhvien" => $sinhvien, 
+            "sinhviens" => $result['data'],
+            "totalPages" => $result['totalPages'],
+            "currentPage" => $page,
             "title" => "Danh sách sinh viên"
         ]);
     }
-
     //   hiển thị Form thêm mới 
     public function create() {
         $this->view("layout/masterlayout", [

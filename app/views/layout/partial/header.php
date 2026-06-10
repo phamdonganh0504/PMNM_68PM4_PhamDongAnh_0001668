@@ -1,5 +1,3 @@
-<div class="header">
-    <h2 style="color: white; margin: 0; line-height: 80px; padding-left: 20px;">
-        HỆ THỐNG QUẢN LÝ SINH VIÊN
-    </h2>
+<div style="width: 100%; height: 80px; background-color: #ff0505; color: white; display: flex; align-items: center; padding-left: 20px;">
+    <h2 style="margin: 0;">HỆ THỐNG QUẢN LÝ SINH VIÊN</h2>
 </div>

@@ -1,29 +1,41 @@
-<h2 style="text-align: center;">Danh sách sinh viên</h2>
+<h2 style="text-align: center;"><?php echo $title ?></h2>
 
-<div style="text-align: center; margin-bottom: 20px;">
-    <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/create" 
-       style="padding: 10px; background-color: green; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-       + Thêm sinh viên mới
-    </a>
+<div style="text-align: right; margin-bottom: 10px;">
+    <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/create" style="padding: 8px; background: green; color: white; text-decoration: none;">+ Thêm mới</a>
 </div>
 
 <table>
-    <tr>
-        <th>ID</th>
-        <th>Họ tên</th>
-        <th>Giới tính</th>
-        <th>MSSV</th>
-    </tr>
-    <?php foreach ($sinhvien as $sv): ?>
-    <tr>
-        <td><?php echo $sv['id']; ?></td>
-        <td><?php echo $sv['sinhvien']; ?></td>
-        <td><?php echo $sv['giotinh']; ?></td>
-        <td><?php echo $sv['mssv']; ?></td>
-    </tr>
-    <?php endforeach; ?>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Họ và tên</th>
+            <th>Giới tính</th>
+            <th>MSSV</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($sinhviens as $sv): ?>
+        <tr>
+            <td><?php echo $sv['id']; ?></td>
+            <td><?php echo $sv['sinhvien']; ?></td>
+            <td><?php echo $sv['giotinh']; ?></td>
+            <td><?php echo $sv['mssv']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 
-<p style="text-align: center; margin-top: 20px;">
+<!-- Phân trang đơn giản -->
+<div class="pagination">
+    <span>Trang: </span>
+    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index/<?php echo $i; ?>" 
+           class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
+           <?php echo $i; ?>
+        </a>
+    <?php endfor; ?>
+</div>
+
+<p style="text-align: center;">
     <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/auth/logout">Đăng xuất</a>
 </p>

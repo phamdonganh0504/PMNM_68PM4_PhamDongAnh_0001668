@@ -1,5 +1,3 @@
-<div class="footer">
-    <p style="color: white; text-align: center; line-height: 80px; margin: 0;">
-        &copy; 2024 Hệ Thống Quản Lý Sinh Viên - Phạm Đông Anh - 0001668
-    </p>
+<div style="width: 100%; height: 80px; background-color: #407cff; color: white; display: flex; align-items: center; justify-content: center;">
+    <p style="margin: 0;">© 2024 - 68PM4 - 0001668</p>
 </div>
