@@ -26,7 +26,6 @@ class sinhvien extends Controller {
             "title" => "Thêm mới sinh viên"
         ]);
     }
-
     //   xử lý lưu dữ liệu 
     public function store() {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -43,6 +42,36 @@ class sinhvien extends Controller {
                 exit();
             } else {
                 echo "Thêm mới sinh viên thất bại";
+            }
+        }
+    }
+    // Hiển thị form sửa
+    public function edit($id) {
+        $sinhvienModel = $this->model('sinhvienModel');
+        $sv = $sinhvienModel->getSinhVienById($id);
+
+        $this->view("layout/masterlayout", [
+            "viewname" => "sinhvien/edit",
+            "sinhvien" => $sv,
+            "title" => "Chỉnh sửa sinh viên"
+        ]);
+    }
+
+    // Xử lý cập nhật dữ liệu
+    public function update($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $hoten = $_POST['hoten'];
+            $gioitinh = $_POST['gioitinh'];
+            $mssv = $_POST['mssv'];
+
+            $sinhvienModel = $this->model('sinhvienModel');
+            $result = $sinhvienModel->update($id, $hoten, $gioitinh, $mssv);
+
+            if ($result) {
+                header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+                exit();
+            } else {
+                echo "Cập nhật thất bại!";
             }
         }
     }

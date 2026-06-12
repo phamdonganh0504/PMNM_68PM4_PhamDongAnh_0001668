@@ -11,6 +11,7 @@
             <th>Họ và tên</th>
             <th>Giới tính</th>
             <th>MSSV</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,10 @@
             <td><?php echo $sv['sinhvien']; ?></td>
             <td><?php echo $sv['giotinh']; ?></td>
             <td><?php echo $sv['mssv']; ?></td>
+            <td>
+                <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/edit/<?php echo $sv['id']; ?>"
+                    style="color: blue; text-decoration: none;">[Sửa]</a>  
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
