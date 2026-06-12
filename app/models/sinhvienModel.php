@@ -45,7 +45,9 @@ class sinhvienModel extends ConnectDB {
         return $stmt->execute();
     }
 
-    // 1. Lấy 1 sinh viên theo ID để hiện lên form sửa
+
+    // Sửa thông tin sinh viên
+    //  Lấy 1 sinh viên theo ID để hiện lên form sửa
     public function getSinhVienById($id) {
         $query = "SELECT * FROM tbl_sinhvien WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -54,7 +56,7 @@ class sinhvienModel extends ConnectDB {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // 2. Cập nhật thông tin sinh viên
+    //  Cập nhật thông tin sinh viên
     public function update($id, $hoten, $gioitinh, $mssv) {
         $query = "UPDATE tbl_sinhvien SET sinhvien = :hoten, giotinh = :gioitinh, mssv = :mssv WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -65,4 +67,11 @@ class sinhvienModel extends ConnectDB {
         return $stmt->execute();
     }
 
+    // Xóa sinh viên
+    public function delete($id) {
+        $query = "DELETE FROM tbl_sinhvien WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }

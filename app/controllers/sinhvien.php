@@ -75,5 +75,18 @@ class sinhvien extends Controller {
             }
         }
     }
+
+    // Xử lý xóa sinh viên
+    public function delete($id) {
+        $sinhvienModel = $this->model('sinhvienModel');
+        $result = $sinhvienModel->delete($id);
+
+        if ($result) {
+            header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+            exit();
+        } else {
+            echo "Lỗi: Không thể xóa sinh viên này.";
+        }
+    }
 }
 ?>

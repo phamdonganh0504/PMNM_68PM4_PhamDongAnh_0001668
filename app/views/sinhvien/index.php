@@ -22,8 +22,16 @@
             <td><?php echo $sv['giotinh']; ?></td>
             <td><?php echo $sv['mssv']; ?></td>
             <td>
+                <!-- Update -->
                 <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/edit/<?php echo $sv['id']; ?>"
                     style="color: blue; text-decoration: none;">[Sửa]</a>  
+
+                <!-- Delete -->
+                <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/delete/<?php echo $sv['id']; ?>" 
+                    style="color: red; text-decoration: none;" 
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không?');">
+                        [Xóa]
+                </a>
             </td>
         </tr>
         <?php endforeach; ?>
