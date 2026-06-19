@@ -33,14 +33,36 @@ class sinhvienModel extends ConnectDB {
         ];
     }
 
+    // Kiểm tra xem MSSV đã có trong hệ thống chưa (Trả về true nếu trùng)
+    public function checkMssvExist($mssv, $currentId = null) {
+        $sql = "SELECT id FROM tbl_sinhvien WHERE mssv = :mssv";
+        
+        
+        if ($currentId !== null) {
+            $sql .= " AND id != :id";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':mssv', $mssv);
+        if ($currentId !== null) {
+            $stmt->bindParam(':id', $currentId);
+        }
+        
+        $stmt->execute();
+        
+        
+        return $stmt->rowCount() > 0;
+    }
+
     //  Thêm mới sinh viên
-    public function create($hoten, $gioitinh, $mssv) {
-        $query = "INSERT INTO tbl_sinhvien (sinhvien, giotinh, mssv) VALUES (:hoten, :gioitinh, :mssv)";
+       public function create($hoten, $gioitinh, $mssv, $malop) {
+        $query = "INSERT INTO tbl_sinhvien (sinhvien, giotinh, mssv, malop) VALUES (:hoten, :gioitinh, :mssv, :malop)";
         $stmt = $this->conn->prepare($query);
         
         $stmt->bindParam(':hoten', $hoten);
         $stmt->bindParam(':gioitinh', $gioitinh);
         $stmt->bindParam(':mssv', $mssv);
+        $stmt->bindParam(':malop', $malop);
         
         return $stmt->execute();
     }
@@ -56,13 +78,14 @@ class sinhvienModel extends ConnectDB {
     }
 
     //  Cập nhật thông tin sinh viên
-    public function update($id, $hoten, $gioitinh, $mssv) {
-        $query = "UPDATE tbl_sinhvien SET sinhvien = :hoten, giotinh = :gioitinh, mssv = :mssv WHERE id = :id";
+    public function update($id, $hoten, $gioitinh, $mssv, $malop) {
+        $query = "UPDATE tbl_sinhvien SET sinhvien = :hoten, giotinh = :gioitinh, mssv = :mssv, malop = :malop WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':hoten', $hoten);
         $stmt->bindParam(':gioitinh', $gioitinh);
         $stmt->bindParam(':mssv', $mssv);
+        $stmt->bindParam(':malop', $malop); // Thêm dòng này
         return $stmt->execute();
     }
 
@@ -73,4 +96,5 @@ class sinhvienModel extends ConnectDB {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
 }

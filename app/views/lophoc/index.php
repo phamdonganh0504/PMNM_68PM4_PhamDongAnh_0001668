@@ -1,43 +1,61 @@
-<h2 style="text-align: center;"><?php echo $title ?></h2>
+<style>
+    /* Dung chung css */
+    .table-container { margin: 20px auto; width: 85%; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 15px;}
+    .my-table { width: 100%; border-collapse: collapse; }
+    .my-table th { background-color: #2980b9; color: white; padding: 12px; font-weight: normal; }
+    .my-table td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; }
+    .my-table tr:hover { background-color: #f1f1f1; }
+    .btn-action { padding: 6px 12px; text-decoration: none; border-radius: 4px; color: #fff; font-size: 13px; margin: 0 2px; }
+    .btn-edit { background-color: #f1c40f; color: #000; font-weight: bold; }
+    .btn-del { background-color: #e74c3c; font-weight: bold;}
+    .btn-add { background: #27ae60; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; }
+</style>
 
-<div style="text-align: right; margin-bottom: 10px;">
-    <a href="<?php echo URLROOT; ?>/lophoc/create" style="padding: 8px; background: green; color: white; text-decoration: none;">
-        + Thêm mới lớp học
-    </a>
-</div>
+<div class="table-container">
+    <h2 style="text-align: center; margin-top:0; color:#333;"><?php echo $title ?></h2>
 
-<table>
-    <thead>
-        <tr>
-            <th>STT (ID)</th>
-            <th>Mã Lớp</th>
-            <th>Tên Lớp</th>
-            <th>Ghi Chú</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($lophocs as $lop): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($lop['id'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($lop['malop'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($lop['tenlop'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($lop['ghichu'], ENT_QUOTES, 'UTF-8'); ?></td>
-            <td>
-                <a href="<?php echo URLROOT; ?>/lophoc/edit/<?php echo $lop['id']; ?>" style="padding: 3px; background-color: #f4f40f; color: black; text-decoration: none;">Sửa</a>  
-                <a href="<?php echo URLROOT; ?>/lophoc/delete/<?php echo $lop['id']; ?>" style="padding: 3px; background-color: red; color: white; text-decoration: none;" onclick="return confirm('Bạn chắc chắn xóa lớp này?');">Xóa</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+    <div style="text-align: right; margin-bottom: 15px;">
+        <a href="<?php echo URLROOT; ?>/lophoc/create" class="btn-add"> + Thêm mới Lớp học</a>
+    </div>
 
-<!-- Pagination -->
-<div class="pagination">
-    <span>Trang: </span>
-    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a href="<?php echo URLROOT; ?>/lophoc/index/<?php echo $i; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
-           <?php echo $i; ?>
-        </a>
-    <?php endfor; ?>
+    <table class="my-table">
+        <thead>
+            <tr>
+                <th width="80px">STT</th>
+                <th>Mã Lớp</th>
+                <th>Tên Lớp</th>
+                <th>Ghi Chú</th>
+                <th width="150px">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                // CÔNG THỨC TÍNH STT TỰ ĐỘNG
+                $limit = 5; 
+                $stt = ($currentPage - 1) * $limit + 1;
+            ?>
+            <?php foreach ($lophocs as $lop): ?>
+            <tr>
+                <!-- Gắn thẻ chạy biến đếm thay cho in ID cơ sở dữ liệu -->
+                <td><strong><?php echo $stt++; ?></strong></td>
+                <td><strong style="color: #c0392b;"><?php echo htmlspecialchars($lop['malop'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
+                <td style="text-align: left; font-weight:500;"><?php echo htmlspecialchars($lop['tenlop'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td style="color:#7f8c8d; font-size:14px; text-align: left;"><?php echo htmlspecialchars($lop['ghichu'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+                <td>
+                    <a href="<?php echo URLROOT; ?>/lophoc/edit/<?php echo $lop['id']; ?>" class="btn-action btn-edit">Sửa</a>  
+                    <a href="<?php echo URLROOT; ?>/lophoc/delete/<?php echo $lop['id']; ?>" class="btn-action btn-del" onclick="return confirm('Bạn chắc chắn xóa lớp này? (Nếu có Sinh viên đang dùng mã lớp này có thể phát sinh rủi ro)');">Xóa</a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="pagination" style="margin-top: 25px; padding-bottom: 20px;">
+        <span style="font-weight:bold;">Trang: </span>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <a href="<?php echo URLROOT; ?>/lophoc/index/<?php echo $i; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
+            <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+    </div>
 </div>

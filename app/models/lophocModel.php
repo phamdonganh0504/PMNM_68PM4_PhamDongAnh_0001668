@@ -6,6 +6,13 @@ class lophocModel extends ConnectDB {
         $this->connect();
     }
 
+     public function getAllLopHoc() {
+        $query = "SELECT malop, tenlop FROM tbl_lophoc";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     //  Phân trang và lấy dữ liệu
     public function paging($limit, $offset) {
         $sql = "SELECT * FROM tbl_lophoc LIMIT :limit OFFSET :offset";

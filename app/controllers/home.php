@@ -1,12 +1,20 @@
 <?php
 class home extends Controller {
     public function index(){
-        echo "Day la trang chu";
-        echo "<br><a href='" . URLROOT . "/sinhvien'>Vào danh sách sinh viên</a>";
+        header("Location: " . URLROOT . "/sinhvien/index");
+        exit();
     }
 
     public function login(){
         
-        $this->view("auth/login");
+        $errorMessage = '';
+        if (isset($_GET['msg']) && $_GET['msg'] === 'error_password') {
+            $errorMessage = 'LỖI: Tên đăng nhập hoặc mật khẩu không chính xác!';
+        }
+
+        
+        $this->view("auth/login", [
+            'errorMessage' => $errorMessage
+        ]);
     }
 }

@@ -21,27 +21,50 @@ class sinhvien extends Controller {
     }
     //     Form thêm mới 
     public function create() {
+        $lophocModel = $this->model('lophocModel');
+        $danhsachLop = $lophocModel->getAllLopHoc();
+
         $this->view("layout/masterlayout", [
             "viewname" => "sinhvien/create",
+            "danhsachLop" => $danhsachLop, 
             "title" => "Thêm mới sinh viên"
         ]);
     }
-    //     lưu dữ liệu 
+    // lưu dữ liệu 
     public function store() {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $hoten = $_POST['hoten'];
-            $gioitinh = $_POST['gioitinh'];
-            $mssv = $_POST['mssv'];
+            $hoten = trim($_POST['hoten']);
+            $gioitinh = trim($_POST['gioitinh']);
+            $mssv = trim($_POST['mssv']);
+            $malop = trim($_POST['malop']);
 
             $sinhvienModel = $this->model('sinhvienModel');
-            $result = $sinhvienModel->create($hoten, $gioitinh, $mssv);
+            
+            // ============== KIỂM TRA BẮT LỖI TRƯỚC KHI THÊM ==============
+            if ($sinhvienModel->checkMssvExist($mssv)) {
+                
+                $lophocModel = $this->model('lophocModel');
+                $danhsachLop = $lophocModel->getAllLopHoc();
+                
+                
+                $this->view("layout/masterlayout", [
+                    "viewname" => "sinhvien/create",
+                    "danhsachLop" => $danhsachLop,
+                    "title" => "Thêm mới sinh viên",
+                    "error" => "Cảnh báo: Sinh viên với MSSV $mssv đã tồn tại! Vui lòng nhập mã khác." 
+                ]);
+                exit(); 
+            }
+            // =============================================================
+
+            // Chỉ cho insert khi logic kiểm tra bị sai (Tức là mã hợp lệ an toàn)
+            $result = $sinhvienModel->create($hoten, $gioitinh, $mssv, $malop);
 
             if($result) {
-                // Chuyển hướng về trang danh sách 
                 header("Location: " . URLROOT . "/sinhvien/index");
                 exit();
             } else {
-                echo "Thêm mới sinh viên thất bại";
+                echo "Thêm mới thất bại ở lỗi hệ thống...";
             }
         }
     }
@@ -50,9 +73,14 @@ class sinhvien extends Controller {
         $sinhvienModel = $this->model('sinhvienModel');
         $sv = $sinhvienModel->getSinhVienById($id);
 
+        
+        $lophocModel = $this->model('lophocModel');
+        $danhsachLop = $lophocModel->getAllLopHoc();
+
         $this->view("layout/masterlayout", [
             "viewname" => "sinhvien/edit",
             "sinhvien" => $sv,
+            "danhsachLop" => $danhsachLop, // [NEW] truyền mảng sang
             "title" => "Chỉnh sửa sinh viên"
         ]);
     }
@@ -60,18 +88,38 @@ class sinhvien extends Controller {
     //   cập nhật dữ liệu
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $hoten = $_POST['hoten'];
-            $gioitinh = $_POST['gioitinh'];
-            $mssv = $_POST['mssv'];
+            $hoten = trim($_POST['hoten']);
+            $gioitinh = trim($_POST['gioitinh']);
+            $mssv = trim($_POST['mssv']);
+            $malop = trim($_POST['malop']);
 
             $sinhvienModel = $this->model('sinhvienModel');
-            $result = $sinhvienModel->update($id, $hoten, $gioitinh, $mssv);
+
+            // ============== KIỂM TRA BẮT LỖI TRƯỚC KHI SỬA ==============
+            if ($sinhvienModel->checkMssvExist($mssv, $id)) {
+                
+                
+                $lophocModel = $this->model('lophocModel');
+                $danhsachLop = $lophocModel->getAllLopHoc();
+                
+                $svGoc = $sinhvienModel->getSinhVienById($id);
+
+                $this->view("layout/masterlayout", [
+                    "viewname" => "sinhvien/edit",
+                    "sinhvien" => $svGoc, // Trả lại form để họ xem cái gốc 
+                    "danhsachLop" => $danhsachLop,
+                    "title" => "Chỉnh sửa sinh viên",
+                    "error" => "Bạn không thể đổi thành mã: $mssv. Đã bị đăng ký bởi sv khác."
+                ]);
+                exit(); 
+            }
+            // ==============================================================
+
+            $result = $sinhvienModel->update($id, $hoten, $gioitinh, $mssv, $malop);
 
             if ($result) {
                 header("Location: " . URLROOT . "/sinhvien/index");
                 exit();
-            } else {
-                echo "Cập nhật thất bại!";
             }
         }
     }
@@ -88,5 +136,7 @@ class sinhvien extends Controller {
             echo "Lỗi: Không thể xóa sinh viên này.";
         }
     }
+
+    
 }
 ?>
