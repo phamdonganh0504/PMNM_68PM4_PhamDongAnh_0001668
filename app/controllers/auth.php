@@ -11,8 +11,7 @@ class auth extends Controller {
             $password = $_POST['password'] ?? '';
             
             if (isset($this->user[$username]) && $this->user[$username] == $password) {
-                $_SESSION['user'] = $username; // Đổi thành 'user' cho khớp middleware
-                header("Location: " . URLROOT . "/sinhvien/index");
+                $_SESSION['user'] = $username; 
                 exit();
             } else {
                 header('Location: ' . URLROOT . '/home/login');

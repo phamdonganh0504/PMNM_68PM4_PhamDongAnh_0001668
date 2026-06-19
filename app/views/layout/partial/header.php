@@ -6,5 +6,5 @@
            display: flex; 
            align-items: center; 
            padding-left: 20px;">
-    <h2 style="margin: 0;">HỆ THỐNG QUẢN LÝ SINH VIÊN</h2>
+    <h3 style="margin: 0;">HỆ THỐNG QUẢN LÝ SINH VIÊN</h3>
 </div>

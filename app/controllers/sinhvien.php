@@ -19,14 +19,14 @@ class sinhvien extends Controller {
             "title" => "Danh sách sinh viên"
         ]);
     }
-    //   hiển thị Form thêm mới 
+    //     Form thêm mới 
     public function create() {
         $this->view("layout/masterlayout", [
             "viewname" => "sinhvien/create",
             "title" => "Thêm mới sinh viên"
         ]);
     }
-    //   xử lý lưu dữ liệu 
+    //     lưu dữ liệu 
     public function store() {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hoten = $_POST['hoten'];
@@ -45,7 +45,7 @@ class sinhvien extends Controller {
             }
         }
     }
-    // Hiển thị form sửa
+    //   form sửa
     public function edit($id) {
         $sinhvienModel = $this->model('sinhvienModel');
         $sv = $sinhvienModel->getSinhVienById($id);
@@ -57,7 +57,7 @@ class sinhvien extends Controller {
         ]);
     }
 
-    // Xử lý cập nhật dữ liệu
+    //   cập nhật dữ liệu
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hoten = $_POST['hoten'];
@@ -76,7 +76,7 @@ class sinhvien extends Controller {
         }
     }
 
-    // Xử lý xóa sinh viên
+    //   xóa sinh viên
     public function delete($id) {
         $sinhvienModel = $this->model('sinhvienModel');
         $result = $sinhvienModel->delete($id);

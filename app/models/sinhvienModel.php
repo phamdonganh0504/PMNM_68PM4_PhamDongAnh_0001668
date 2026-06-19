@@ -22,7 +22,7 @@ class sinhvienModel extends ConnectDB {
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Tính tổng số trang
+        //  tổng số trang
         $totalRows = $this->conn->query("SELECT COUNT(*) FROM tbl_sinhvien")->fetchColumn();
         $totalPages = ceil($totalRows / $limit);
 
@@ -47,7 +47,6 @@ class sinhvienModel extends ConnectDB {
 
 
     // Sửa thông tin sinh viên
-    //  Lấy 1 sinh viên theo ID để hiện lên form sửa
     public function getSinhVienById($id) {
         $query = "SELECT * FROM tbl_sinhvien WHERE id = :id";
         $stmt = $this->conn->prepare($query);
