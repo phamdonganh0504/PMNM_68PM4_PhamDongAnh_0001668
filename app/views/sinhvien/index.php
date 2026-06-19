@@ -28,13 +28,26 @@
     </div>
 
     <table class="my-table">
+        <?php 
+            $searchQuery = !empty($search) ? '&search=' . urlencode($search) : '';
+            function buildSortUrl($column, $current_sort, $current_order, $searchQuery) {
+                $new_order = ($current_sort === $column && $current_order === 'ASC') ? 'DESC' : 'ASC';
+                $icon = '';
+                if ($current_sort === $column) {
+                    $icon = $current_order === 'ASC' ? ' &#9650;' : ' &#9660;';
+                }
+                return ['url' => "?sort_by=$column&order=$new_order$searchQuery", 'icon' => $icon];
+            }
+            $sort_mssv = buildSortUrl('mssv', $sort_by ?? '', $order ?? '', $searchQuery);
+            $sort_hoten = buildSortUrl('sinhvien', $sort_by ?? '', $order ?? '', $searchQuery);
+        ?>
         <thead>
             <tr>
                 <th>STT</th>
-                <th>Họ và tên</th>
+                <th><a href="<?php echo $sort_hoten['url']; ?>" style="color: white; text-decoration: none;">Họ và tên<?php echo $sort_hoten['icon']; ?></a></th>
                 <th>Giới tính</th>
-                <th>MSSV</th>
-                <th>Mã Lớp</th> <!-- Đây, nãy thiếu cột này đây -->
+                <th><a href="<?php echo $sort_mssv['url']; ?>" style="color: white; text-decoration: none;">MSSV<?php echo $sort_mssv['icon']; ?></a></th>
+                <th>Mã Lớp</th>
                 <th width="150px">Thao tác</th>
             </tr>
         </thead>
@@ -64,10 +77,14 @@
     <div class="pagination" style="margin-top: 25px; padding-bottom:20px;">
         <span style="font-weight:bold;">Trang: </span>
         <?php 
-            $searchQuery = !empty($search) ? '?search=' . urlencode($search) : '';
+            $queryParams = [];
+            if (!empty($search)) $queryParams['search'] = $search;
+            if (isset($sort_by)) $queryParams['sort_by'] = $sort_by;
+            if (isset($order)) $queryParams['order'] = $order;
+            $queryString = !empty($queryParams) ? '?' . http_build_query($queryParams) : '';
         ?>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="<?php echo URLROOT; ?>/sinhvien/index/<?php echo $i; ?><?php echo $searchQuery; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
+            <a href="<?php echo URLROOT; ?>/sinhvien/index/<?php echo $i; ?><?php echo $queryString; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
             <?php echo $i; ?>
             </a>
         <?php endfor; ?>

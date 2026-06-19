@@ -8,9 +8,11 @@ class sinhvien extends Controller {
         $offset = ($page - 1) * $limit;
 
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $sort_by = isset($_GET['sort_by']) ? trim($_GET['sort_by']) : 'id';
+        $order = isset($_GET['order']) ? trim($_GET['order']) : 'DESC';
 
         $sinhvienModel = $this->model('sinhvienModel');
-        $result = $sinhvienModel->paging($limit, $offset, $search);
+        $result = $sinhvienModel->paging($limit, $offset, $search, $sort_by, $order);
 
         // Truyền dữ liệu  sang view
         $this->view("layout/masterlayout", [
@@ -19,6 +21,8 @@ class sinhvien extends Controller {
             "totalPages" => $result['totalPages'],
             "currentPage" => $page,
             "search" => $search,
+            "sort_by" => $sort_by,
+            "order" => $order,
             "title" => "Danh sách sinh viên"
         ]);
     }

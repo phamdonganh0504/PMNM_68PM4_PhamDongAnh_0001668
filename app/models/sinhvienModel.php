@@ -13,7 +13,7 @@ class sinhvienModel extends ConnectDB {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // Phân trang và Tìm kiếm
-    public function paging($limit, $offset, $search = '') {
+    public function paging($limit, $offset, $search = '', $sort_by = 'id', $order = 'DESC') {
         $searchQuery = "";
         $params = [];
 
@@ -22,8 +22,15 @@ class sinhvienModel extends ConnectDB {
             $params[':search'] = '%' . $search . '%';
         }
 
+        // Validate cột được sắp xếp để tránh SQL injection
+        $allowed_sort_columns = ['id', 'mssv', 'sinhvien'];
+        if (!in_array($sort_by, $allowed_sort_columns)) {
+            $sort_by = 'id';
+        }
+        $order = (strtoupper($order) === 'ASC') ? 'ASC' : 'DESC';
+
         //  Lấy dữ liệu trang hiện tại
-        $sql = "SELECT * FROM tbl_sinhvien" . $searchQuery . " LIMIT :limit OFFSET :offset";
+        $sql = "SELECT * FROM tbl_sinhvien" . $searchQuery . " ORDER BY " . $sort_by . " " . $order . " LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($sql);
         
         foreach ($params as $key => $val) {
