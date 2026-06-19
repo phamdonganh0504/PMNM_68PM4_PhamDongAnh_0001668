@@ -12,18 +12,37 @@ class sinhvienModel extends ConnectDB {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    // Phân trang
-    public function paging($limit, $offset) {
+    // Phân trang và Tìm kiếm
+    public function paging($limit, $offset, $search = '') {
+        $searchQuery = "";
+        $params = [];
+
+        if (!empty($search)) {
+            $searchQuery = " WHERE mssv LIKE :search OR sinhvien LIKE :search OR malop LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+
         //  Lấy dữ liệu trang hiện tại
-        $sql = "SELECT * FROM tbl_sinhvien LIMIT :limit OFFSET :offset";
+        $sql = "SELECT * FROM tbl_sinhvien" . $searchQuery . " LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($sql);
+        
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val, PDO::PARAM_STR);
+        }
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        //  tổng số trang
-        $totalRows = $this->conn->query("SELECT COUNT(*) FROM tbl_sinhvien")->fetchColumn();
+        //  tổng số bản ghi
+        $countSql = "SELECT COUNT(*) FROM tbl_sinhvien" . $searchQuery;
+        $countStmt = $this->conn->prepare($countSql);
+        foreach ($params as $key => $val) {
+            $countStmt->bindValue($key, $val, PDO::PARAM_STR);
+        }
+        $countStmt->execute();
+        $totalRows = $countStmt->fetchColumn();
+        
         $totalPages = ceil($totalRows / $limit);
 
         return [

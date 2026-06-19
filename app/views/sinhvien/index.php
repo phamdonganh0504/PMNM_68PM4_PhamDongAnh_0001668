@@ -14,7 +14,16 @@
 <div class="table-container">
     <h2 style="text-align: center; margin-top:0; color:#333;"><?php echo $title ?></h2>
 
-    <div style="text-align: right; margin-bottom: 15px;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+        <!-- Form tìm kiếm -->
+        <form action="<?php echo URLROOT; ?>/sinhvien/index" method="GET" style="display: flex; gap: 5px; align-items: center;">
+            <input type="text" name="search" placeholder="Tìm mssv, họ tên, lớp..." value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="padding: 6px; width: 220px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="padding: 6px 12px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer;">Tìm kiếm</button>
+            <?php if(!empty($search)): ?>
+                <a href="<?php echo URLROOT; ?>/sinhvien/index" style="padding: 6px 12px; background: #e74c3c; color: white; text-decoration: none; border-radius: 4px; font-size: 13px;">Hủy</a>
+            <?php endif; ?>
+        </form>
+
         <a href="<?php echo URLROOT; ?>/sinhvien/create" class="btn-add"> + Thêm mới sinh viên</a>
     </div>
 
@@ -54,8 +63,11 @@
 
     <div class="pagination" style="margin-top: 25px; padding-bottom:20px;">
         <span style="font-weight:bold;">Trang: </span>
+        <?php 
+            $searchQuery = !empty($search) ? '?search=' . urlencode($search) : '';
+        ?>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="<?php echo URLROOT; ?>/sinhvien/index/<?php echo $i; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
+            <a href="<?php echo URLROOT; ?>/sinhvien/index/<?php echo $i; ?><?php echo $searchQuery; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
             <?php echo $i; ?>
             </a>
         <?php endfor; ?>

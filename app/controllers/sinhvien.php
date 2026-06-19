@@ -7,8 +7,10 @@ class sinhvien extends Controller {
         $page = (int)$page > 0 ? (int)$page : 1; 
         $offset = ($page - 1) * $limit;
 
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
         $sinhvienModel = $this->model('sinhvienModel');
-        $result = $sinhvienModel->paging($limit, $offset);
+        $result = $sinhvienModel->paging($limit, $offset, $search);
 
         // Truyền dữ liệu  sang view
         $this->view("layout/masterlayout", [
@@ -16,6 +18,7 @@ class sinhvien extends Controller {
             "sinhviens" => $result['data'],
             "totalPages" => $result['totalPages'],
             "currentPage" => $page,
+            "search" => $search,
             "title" => "Danh sách sinh viên"
         ]);
     }
