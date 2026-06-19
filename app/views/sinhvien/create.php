@@ -1,6 +1,6 @@
 <h2 style="text-align: center;">Thêm sinh viên mới</h2>
 
-<form action="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/store" method="post" style="width: 50%; margin: 0 auto; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+<form action="<?php echo URLROOT; ?>/sinhvien/store" method="post" style="width: 50%; margin: 0 auto; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
     
     <label>Họ tên:</label><br>
     <input type="text" name="hoten" required style="width: 100%; padding: 8px; margin-top: 5px;"><br><br>
@@ -18,7 +18,7 @@
                 style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
             Lưu dữ liệu
         </button>
-        <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index" 
+        <a href="<?php echo URLROOT; ?>/sinhvien/index" 
            style="margin-left: 10px; text-decoration: none; color: #666;">Hủy bỏ</a>
     </div>
 </form>

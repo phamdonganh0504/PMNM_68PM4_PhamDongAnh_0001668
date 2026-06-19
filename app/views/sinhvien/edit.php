@@ -1,6 +1,6 @@
 <h2 style="text-align: center;">Chỉnh sửa thông tin sinh viên</h2>
 
-<form action="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="post" style="width: 50%; margin: 0 auto; border: 1px solid #ccc; padding: 20px;">
+<form action="<?php echo URLROOT; ?>/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="post" style="width: 50%; margin: 0 auto; border: 1px solid #ccc; padding: 20px;">
     
     <label>Họ tên:</label><br>
     <input type="text" name="hoten" value="<?php echo $sinhvien['sinhvien']; ?>" required style="width: 100%; padding: 8px; margin-top: 5px;"><br><br>
@@ -15,6 +15,6 @@
         <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer;">
             Cập nhật dữ liệu
         </button>
-        <a href="/PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index" style="margin-left: 10px; text-decoration: none; color: black;">[Hủy]</a>
+        <a href="<?php echo URLROOT; ?>/sinhvien/index" style="margin-left: 10px; text-decoration: none; color: black;">[Hủy]</a>
     </div>
 </form>

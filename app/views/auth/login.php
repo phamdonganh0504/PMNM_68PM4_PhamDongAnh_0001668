@@ -1,6 +1,6 @@
 <h1>Trang Đăng Nhập</h1>
 
-<form action="/PMNM_68PM4_PhamDongAnh_0001668/public/auth/login" method="POST" autocomplete="off">
+<form action="<?php echo URLROOT; ?>/auth/login" method="POST" autocomplete="off">
     
     Tên đăng nhập: 
     <input type="text" name="username" autocomplete="off"> <br><br>

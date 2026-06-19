@@ -1,18 +1,13 @@
 <?php
 class middleware {
     function checklogin() {
-    
-        $currentUrl = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'home/index';
+        // Làm sạch URL trước khi check
+        $url = isset($_GET['url']) ? filter_var(trim($_GET['url'], '/'), FILTER_SANITIZE_URL) : 'home/index';
         
-        
+        $publicPages = ['home/login', 'auth/login'];
 
-        $publicPages = [
-            'home/login',
-            'auth/login'
-        ];
-
-        if(!isset($_SESSION['user']) && !in_array($currentUrl, $publicPages)) {
-            header('Location: /PMNM_68PM4_PhamDongAnh_0001668/public/home/login');
+        if(!isset($_SESSION['user']) && !in_array($url, $publicPages)) {
+            header('Location: ' . URLROOT . '/home/login');
             exit();
         }
     }

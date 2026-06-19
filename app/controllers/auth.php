@@ -12,10 +12,10 @@ class auth extends Controller {
             
             if (isset($this->user[$username]) && $this->user[$username] == $password) {
                 $_SESSION['user'] = $username; // Đổi thành 'user' cho khớp middleware
-                header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+                header("Location: " . URLROOT . "/sinhvien/index");
                 exit();
             } else {
-                header('Location: /PMNM_68PM4_PhamDongAnh_0001668/public/home/login');
+                header('Location: ' . URLROOT . '/home/login');
                 exit();
             }
         }
@@ -23,7 +23,7 @@ class auth extends Controller {
 
     public function logout() {
         session_destroy();
-        header('Location: /PMNM_68PM4_PhamDongAnh_0001668/public/home/login');
+        header('Location: ' . URLROOT . '/home/login');
         exit();
     }
 }

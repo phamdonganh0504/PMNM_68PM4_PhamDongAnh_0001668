@@ -38,7 +38,7 @@ class sinhvien extends Controller {
 
             if($result) {
                 // Chuyển hướng về trang danh sách 
-                header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+                header("Location: " . URLROOT . "/sinhvien/index");
                 exit();
             } else {
                 echo "Thêm mới sinh viên thất bại";
@@ -68,7 +68,7 @@ class sinhvien extends Controller {
             $result = $sinhvienModel->update($id, $hoten, $gioitinh, $mssv);
 
             if ($result) {
-                header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+                header("Location: " . URLROOT . "/sinhvien/index");
                 exit();
             } else {
                 echo "Cập nhật thất bại!";
@@ -82,7 +82,7 @@ class sinhvien extends Controller {
         $result = $sinhvienModel->delete($id);
 
         if ($result) {
-            header("Location: /PMNM_68PM4_PhamDongAnh_0001668/public/sinhvien/index");
+            header("Location: " . URLROOT . "/sinhvien/index");
             exit();
         } else {
             echo "Lỗi: Không thể xóa sinh viên này.";
