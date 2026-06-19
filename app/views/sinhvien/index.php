@@ -17,11 +17,18 @@
     <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
         <!-- Form tìm kiếm -->
         <form action="<?php echo URLROOT; ?>/sinhvien/index" method="GET" style="display: flex; gap: 5px; align-items: center;">
+            <select name="limit" onchange="this.form.submit()" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="5" <?php echo ($limit == 5) ? 'selected' : ''; ?>>5 dòng</option>
+                <option value="10" <?php echo ($limit == 10) ? 'selected' : ''; ?>>10 dòng</option>
+                <option value="20" <?php echo ($limit == 20) ? 'selected' : ''; ?>>20 dòng</option>
+            </select>
             <input type="text" name="search" placeholder="Tìm mssv, họ tên, lớp..." value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES, 'UTF-8'); ?>" style="padding: 6px; width: 220px; border: 1px solid #ccc; border-radius: 4px;">
             <button type="submit" style="padding: 6px 12px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer;">Tìm kiếm</button>
             <?php if(!empty($search)): ?>
                 <a href="<?php echo URLROOT; ?>/sinhvien/index" style="padding: 6px 12px; background: #e74c3c; color: white; text-decoration: none; border-radius: 4px; font-size: 13px;">Hủy</a>
             <?php endif; ?>
+            <?php if(isset($sort_by)): ?><input type="hidden" name="sort_by" value="<?php echo $sort_by; ?>"><?php endif; ?>
+            <?php if(isset($order)): ?><input type="hidden" name="order" value="<?php echo $order; ?>"><?php endif; ?>
         </form>
 
         <a href="<?php echo URLROOT; ?>/sinhvien/create" class="btn-add"> + Thêm mới sinh viên</a>
@@ -29,7 +36,11 @@
 
     <table class="my-table">
         <?php 
-            $searchQuery = !empty($search) ? '&search=' . urlencode($search) : '';
+            $searchQuery = '';
+            $queryParams = [];
+            if (!empty($search)) $queryParams['search'] = $search;
+            if (isset($limit)) $queryParams['limit'] = $limit;
+            if (!empty($queryParams)) $searchQuery = '&' . http_build_query($queryParams);
             function buildSortUrl($column, $current_sort, $current_order, $searchQuery) {
                 $new_order = ($current_sort === $column && $current_order === 'ASC') ? 'DESC' : 'ASC';
                 $icon = '';
@@ -53,9 +64,9 @@
         </thead>
         <tbody>
             <?php 
-                // CÔNG THỨC KHẮC PHỤC LỖI STT VỚI LIMIT LÀ 5
-                $limit = 5; 
-                $stt = ($currentPage - 1) * $limit + 1;
+                // KHẮC PHỤC LỖI STT VỚI LIMIT ĐỘNG
+                $currentLimit = isset($limit) ? $limit : 5; 
+                $stt = ($currentPage - 1) * $currentLimit + 1;
             ?>
             <?php foreach ($sinhviens as $sv): ?>
             <tr>
@@ -81,6 +92,7 @@
             if (!empty($search)) $queryParams['search'] = $search;
             if (isset($sort_by)) $queryParams['sort_by'] = $sort_by;
             if (isset($order)) $queryParams['order'] = $order;
+            if (isset($limit)) $queryParams['limit'] = $limit;
             $queryString = !empty($queryParams) ? '?' . http_build_query($queryParams) : '';
         ?>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>

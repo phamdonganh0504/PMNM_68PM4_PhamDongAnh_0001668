@@ -3,7 +3,8 @@ class sinhvien extends Controller {
     
     //   hiển thị danh sách
     public function index($page = 1) {
-        $limit = 5; // Số bản ghi mỗi trang
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 5; // Số bản ghi mỗi trang
+        if ($limit <= 0) $limit = 5;
         $page = (int)$page > 0 ? (int)$page : 1; 
         $offset = ($page - 1) * $limit;
 
@@ -23,6 +24,7 @@ class sinhvien extends Controller {
             "search" => $search,
             "sort_by" => $sort_by,
             "order" => $order,
+            "limit" => $limit,
             "title" => "Danh sách sinh viên"
         ]);
     }

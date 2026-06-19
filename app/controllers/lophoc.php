@@ -3,7 +3,8 @@ class lophoc extends Controller {
     
     //  Hiển thị danh sách
     public function index($page = 1) {
-        $limit = 5; 
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 5; 
+        if ($limit <= 0) $limit = 5;
         $page = (int)$page > 0 ? (int)$page : 1; 
         $offset = ($page - 1) * $limit;
 
@@ -15,6 +16,7 @@ class lophoc extends Controller {
             "lophocs" => $result['data'],
             "totalPages" => $result['totalPages'],
             "currentPage" => $page,
+            "limit" => $limit,
             "title" => "Quản lý Lớp học"
         ]);
     }

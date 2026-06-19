@@ -14,7 +14,14 @@
 <div class="table-container">
     <h2 style="text-align: center; margin-top:0; color:#333;"><?php echo $title ?></h2>
 
-    <div style="text-align: right; margin-bottom: 15px;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+        <form action="<?php echo URLROOT; ?>/lophoc/index" method="GET" style="display: flex; align-items: center;">
+            <select name="limit" onchange="this.form.submit()" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="5" <?php echo (isset($limit) && $limit == 5) ? 'selected' : ''; ?>>5 dòng</option>
+                <option value="10" <?php echo (isset($limit) && $limit == 10) ? 'selected' : ''; ?>>10 dòng</option>
+                <option value="20" <?php echo (isset($limit) && $limit == 20) ? 'selected' : ''; ?>>20 dòng</option>
+            </select>
+        </form>
         <a href="<?php echo URLROOT; ?>/lophoc/create" class="btn-add"> + Thêm mới Lớp học</a>
     </div>
 
@@ -30,9 +37,9 @@
         </thead>
         <tbody>
             <?php 
-                // CÔNG THỨC TÍNH STT TỰ ĐỘNG
-                $limit = 5; 
-                $stt = ($currentPage - 1) * $limit + 1;
+                // KHẮC PHỤC LỖI STT VỚI LIMIT ĐỘNG
+                $currentLimit = isset($limit) ? $limit : 5; 
+                $stt = ($currentPage - 1) * $currentLimit + 1;
             ?>
             <?php foreach ($lophocs as $lop): ?>
             <tr>
@@ -52,8 +59,11 @@
 
     <div class="pagination" style="margin-top: 25px; padding-bottom: 20px;">
         <span style="font-weight:bold;">Trang: </span>
+        <?php 
+            $queryString = (isset($limit) && $limit != 5) ? '?limit=' . $limit : '';
+        ?>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="<?php echo URLROOT; ?>/lophoc/index/<?php echo $i; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
+            <a href="<?php echo URLROOT; ?>/lophoc/index/<?php echo $i; ?><?php echo $queryString; ?>" class="<?php echo ($i == $currentPage) ? 'active-page' : ''; ?>">
             <?php echo $i; ?>
             </a>
         <?php endfor; ?>
