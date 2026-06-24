@@ -3,31 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng nhập Hệ thống Quản Lý Sinh Viên</title>
-    <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --light-bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --border-color: #cbd5e1;
+            --danger-color: #dc2626;
+        }
         body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; 
             align-items: center; 
             justify-content: center; 
             min-height: 100vh; 
             background-color: var(--light-bg); 
-            background-image: radial-gradient(circle at top right, #e0e8ff, #f5f6fa);
+            background-image: radial-gradient(circle at top right, #e0e8ff, #f4f6f9);
         }
         .login-box { 
             width: 400px; 
             background: var(--card-bg); 
             padding: 40px; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08); 
-            border-radius: 16px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+            border-radius: 8px; 
             text-align: center; 
-            border: 1px solid rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0;
         }
         .login-box h2 { 
             margin-bottom: 30px; 
             color: var(--primary-color); 
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
         }
         .login-box h2 i {
@@ -42,36 +54,48 @@
         }
         .input-group input { 
             width: 100%; 
-            padding: 14px; 
-            border: 1.5px solid var(--border-color); 
-            border-radius: 8px; 
-            font-size: 15px; 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            font-size: 14px; 
             font-family: inherit;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         .input-group input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
         }
         .btn-login { 
             width: 100%; 
-            padding: 14px; 
+            padding: 12px; 
             background-color: var(--primary-color); 
             color: white; 
             border: none; 
-            font-size: 16px; 
+            font-size: 15px; 
             font-weight: 600;
-            border-radius: 8px; 
+            border-radius: 4px; 
             cursor: pointer; 
-            transition: all 0.3s ease; 
+            transition: all 0.2s ease; 
             margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
         }
         .btn-login:hover { 
             background-color: var(--secondary-color); 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+        }
+        /* Alerts */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-danger {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
         }
     </style>
 </head>

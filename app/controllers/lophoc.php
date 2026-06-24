@@ -38,13 +38,27 @@ class lophoc extends Controller {
             $ghichu = trim($_POST['ghichu']);
 
             $lophocModel = $this->model('lophocModel');
+            
+            // Kiểm tra trùng mã lớp
+            $existing = $lophocModel->conn->prepare("SELECT id FROM tbl_lophoc WHERE malop = :malop");
+            $existing->bindParam(':malop', $malop);
+            $existing->execute();
+            if ($existing->rowCount() > 0) {
+                $_SESSION['error'] = "Mã lớp '$malop' đã tồn tại trong hệ thống! Vui lòng chọn mã khác.";
+                header("Location: " . URLROOT . "/lophoc/create");
+                exit();
+            }
+
             $result = $lophocModel->create($malop, $tenlop, $ghichu);
 
             if($result) {
+                $_SESSION['success'] = "Thêm mới lớp học thành công!";
                 header("Location: " . URLROOT . "/lophoc/index");
                 exit();
             } else {
-                echo "Lỗi: Không thể thêm lớp học";
+                $_SESSION['error'] = "Không thể thêm lớp học!";
+                header("Location: " . URLROOT . "/lophoc/create");
+                exit();
             }
         }
     }
@@ -75,13 +89,45 @@ class lophoc extends Controller {
             $ghichu = trim($_POST['ghichu']);
 
             $lophocModel = $this->model('lophocModel');
+            $lop = $lophocModel->getLopHocById($id);
+
+            if (!$lop) {
+                $_SESSION['error'] = "Lớp học không tồn tại!";
+                header("Location: " . URLROOT . "/lophoc/index");
+                exit();
+            }
+
+            // Nếu thay đổi mã lớp, phải kiểm tra xem mã mới có trùng với lớp khác không
+            if ($lop['malop'] !== $malop) {
+                // Kiểm tra trùng mã lớp
+                $existing = $lophocModel->conn->prepare("SELECT id FROM tbl_lophoc WHERE malop = :malop AND id != :id");
+                $existing->bindParam(':malop', $malop);
+                $existing->bindParam(':id', $id, PDO::PARAM_INT);
+                $existing->execute();
+                if ($existing->rowCount() > 0) {
+                    $_SESSION['error'] = "Mã lớp mới '$malop' đã được sử dụng bởi lớp khác!";
+                    header("Location: " . URLROOT . "/lophoc/edit/" . $id);
+                    exit();
+                }
+
+                // Nếu lớp học đang có sinh viên, không cho sửa mã lớp (vì liên kết bằng mã lớp)
+                if ($lophocModel->hasStudents($lop['malop'])) {
+                    $_SESSION['error'] = "Không thể thay đổi Mã lớp của lớp này vì vẫn còn sinh viên đang học!";
+                    header("Location: " . URLROOT . "/lophoc/edit/" . $id);
+                    exit();
+                }
+            }
+
             $result = $lophocModel->update($id, $malop, $tenlop, $ghichu);
 
             if ($result) {
+                $_SESSION['success'] = "Cập nhật thông tin lớp học thành công!";
                 header("Location: " . URLROOT . "/lophoc/index");
                 exit();
             } else {
-                echo "Cập nhật thất bại!";
+                $_SESSION['error'] = "Cập nhật thất bại!";
+                header("Location: " . URLROOT . "/lophoc/edit/" . $id);
+                exit();
             }
         }
     }
@@ -89,12 +135,27 @@ class lophoc extends Controller {
     //  Xóa dữ liệu
     public function delete($id) {
         $lophocModel = $this->model('lophocModel');
-        $result = $lophocModel->delete($id);
+        $lop = $lophocModel->getLopHocById($id);
 
-        if ($result) {
-            header("Location: " . URLROOT . "/lophoc/index");
-            exit();
+        if ($lop) {
+            if ($lophocModel->hasStudents($lop['malop'])) {
+                $_SESSION['error'] = "Không thể xóa lớp học " . htmlspecialchars($lop['tenlop'], ENT_QUOTES, 'UTF-8') . " (Mã: " . htmlspecialchars($lop['malop'], ENT_QUOTES, 'UTF-8') . ") vì vẫn còn sinh viên thuộc lớp này!";
+                header("Location: " . URLROOT . "/lophoc/index");
+                exit();
+            }
+
+            $result = $lophocModel->delete($id);
+            if ($result) {
+                $_SESSION['success'] = "Xóa lớp học thành công!";
+            } else {
+                $_SESSION['error'] = "Không thể xóa lớp học do lỗi cơ sở dữ liệu!";
+            }
+        } else {
+            $_SESSION['error'] = "Lớp học không tồn tại!";
         }
+
+        header("Location: " . URLROOT . "/lophoc/index");
+        exit();
     }
 }
 ?>

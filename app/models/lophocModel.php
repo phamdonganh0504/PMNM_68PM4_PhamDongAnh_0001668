@@ -61,6 +61,15 @@ class lophocModel extends ConnectDB {
         return $stmt->execute();
     }
 
+    // Kiểm tra lớp học có sinh viên hay không
+    public function hasStudents($malop) {
+        $query = "SELECT COUNT(*) FROM tbl_sinhvien WHERE malop = :malop";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':malop', $malop);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
     // 5. Xóa lớp học
     public function delete($id) {
         $query = "DELETE FROM tbl_lophoc WHERE id = :id";
